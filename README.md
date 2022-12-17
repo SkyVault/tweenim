@@ -1,5 +1,9 @@
 # Tweenim - a simple tween library
 
+## Installation
+
+`nimble install "https://github.com/SkyVault/tweenim"`
+
 ## Example
 
 ```nim
