@@ -89,6 +89,19 @@ proc interpolate*[T] (tween: var Tween[T]) =
       of inQuart: fns.inQuart(time, begin, delta, elapsed)
       of outQuart: fns.outQuart(time, begin, delta, elapsed)
       of inOutQuart: fns.inOutQuart(time, begin, delta, elapsed)
+
+      of inQuint: fns.inQuint(time, begin, delta, elapsed)
+      of outQuint: fns.outQuint(time, begin, delta, elapsed)
+      of inOutQuint: fns.inOutQuint(time, begin, delta, elapsed)
+
+      of inExpo: fns.inExpo(time, begin, delta, elapsed)
+      of outExpo: fns.outExpo(time, begin, delta, elapsed)
+      of inOutExpo: fns.inOutExpo(time, begin, delta, elapsed)
+
+      of inCirc: fns.inCirc(time, begin, delta, elapsed)
+      of outCirc: fns.outCirc(time, begin, delta, elapsed)
+      of inOutCirc: fns.inOutCirc(time, begin, delta, elapsed)
+
       else:
         tween.value
 
@@ -103,6 +116,7 @@ proc set*[T] (tween: var Tween[T], time: T): bool =
     tween.value = tween.target
   elif tween.time >= tween.duration:
     tween.time = tween.duration
+    tween.value = tween.target
   else:
     interpolate(tween)
 
