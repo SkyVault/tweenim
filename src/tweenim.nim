@@ -1,4 +1,5 @@
 import tables, math
+import tweenim/fns
 
 type
   EasingFn = proc(time, begin, delta, elapsed: SomeNumber): SomeNumber
@@ -63,19 +64,6 @@ proc newTween*[T](init, target, duration: T, easing: EasingKind): Tween[T] =
     easing: easing
   )
 
-proc iLinear*[T] (t, b, d, e: T): T =
-  d * t / e + b
-proc iInQuad*[T] (t, b, d, e: T): T =
-  d * pow(t/e, 2.0) + b
-proc iOutQuad[T] (t, b, d, e: T): T =
-  let t2 = (t/e)
-  result = -d * t2 * (t2 - T(2)) + b
-proc iInOutQuad[T] (t, b, d, e: T): T =
-  let t2 = (t / e) * T(2)
-  result =
-    if t2 < T(1): d / T(2) * pow(t2, 2) + b
-    else: -d / 2 * ((t2 - 1) * (t2 - 3) - 1) + b
-
 proc isDone*[T] (tween: Tween[T]): bool =
   tween.time >= tween.duration
 
@@ -88,13 +76,24 @@ proc interpolate*[T] (tween: var Tween[T]) =
 
   tween.value =
     case tween.easing
-      of linear: iLinear(time, begin, delta, elapsed)
+      of linear: fns.linear(time, begin, delta, elapsed)
 
-      of inQuad: iInQuad(time, begin, delta, elapsed)
-      of outQuad: iOutQuad(time, begin, delta, elapsed)
-      of inOutQuad: iInOutQuad(time, begin, delta, elapsed)
+      of inQuad: fns.inQuad(time, begin, delta, elapsed)
+      of outQuad: fns.outQuad(time, begin, delta, elapsed)
+      of inOutQuad: fns.inOutQuad(time, begin, delta, elapsed)
+
+      of inCubic: fns.inCubic(time, begin, delta, elapsed)
+      of outCubic: fns.outCubic(time, begin, delta, elapsed)
+      of inOutCubic: fns.inOutCubic(time, begin, delta, elapsed)
+
+      of inQuart: fns.inQuart(time, begin, delta, elapsed)
+      of outQuart: fns.outQuart(time, begin, delta, elapsed)
+      of inOutQuart: fns.inOutQuart(time, begin, delta, elapsed)
       else:
         tween.value
+
+proc reset*[T] (tween: var Tween[T]): bool =
+  set(0)
 
 proc set*[T] (tween: var Tween[T], time: T): bool =
   tween.time = time
